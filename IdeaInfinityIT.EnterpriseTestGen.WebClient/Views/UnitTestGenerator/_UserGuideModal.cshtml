@@ -1,0 +1,230 @@
+<!-- In-App Interactive User Guide & Documentation Modal -->
+<div class="modal fade" id="userGuideModal" tabindex="-1" aria-labelledby="userGuideModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content shadow-lg border-0 rounded-3">
+            <div class="modal-header bg-gradient-primary text-white py-3">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="ri-book-open-line fs-3 text-warning"></i>
+                    <div>
+                        <h5 class="modal-title fw-bold mb-0" id="userGuideModalLabel">Enterprise Automated Unit Testing Studio — User & Technical Guide</h5>
+                        <span class="small text-white-50">Universal C# / .NET 8 Test Generation, Roslyn AST, Mocking, and AI Test Synthesis</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body p-4">
+                <!-- Guide Navigation Tabs -->
+                <ul class="nav nav-pills nav-fill mb-4 bg-light p-1 rounded-pill" id="guideTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active py-2 fw-semibold small" id="guide-quickstart-tab" data-bs-toggle="pill" data-bs-target="#guide-quickstart" type="button" role="tab">
+                            <i class="ri-rocket-line me-1 text-primary"></i>1. Quick Start Guide
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-2 fw-semibold small" id="guide-howgen-tab" data-bs-toggle="pill" data-bs-target="#guide-howgen" type="button" role="tab">
+                            <i class="ri-cpu-line me-1 text-info"></i>2. How Tests are Generated
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-2 fw-semibold small" id="guide-howtest-tab" data-bs-toggle="pill" data-bs-target="#guide-howtest" type="button" role="tab">
+                            <i class="ri-play-list-check-line me-1 text-success"></i>3. How Tests Execute & Validate
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link py-2 fw-semibold small" id="guide-ai-tab" data-bs-toggle="pill" data-bs-target="#guide-ai" type="button" role="tab">
+                            <i class="ri-brain-line me-1 text-warning"></i>4. AI Reasoning & BRDs
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Guide Tab Content -->
+                <div class="tab-content">
+                    <!-- Tab 1: Quickstart -->
+                    <div class="tab-pane fade show active" id="guide-quickstart" role="tabpanel">
+                        <div class="card border-0 bg-light-subtle rounded-3 p-3 mb-4">
+                            <h6 class="fw-bold text-dark d-flex align-items-center gap-2">
+                                <i class="ri-flag-line text-primary"></i>3-Step Fast Workflow
+                            </h6>
+                            <p class="text-muted small mb-0">Anyone on the team (Developer, QA, or Tech Lead) can generate a complete enterprise test suite in less than 30 seconds without writing boilerplate code.</p>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="card border h-100 p-3 rounded-3 shadow-none">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <span class="badge bg-primary rounded-circle px-2 py-1">Step 1</span>
+                                        <h6 class="fw-bold text-dark mb-0">Select Source</h6>
+                                    </div>
+                                    <p class="text-muted small">Choose how you want to provide your C# code:</p>
+                                    <ul class="small text-secondary ps-3 mb-0">
+                                        <li><strong>Upload Project .ZIP:</strong> Compress any project folder or solution and drag it in.</li>
+                                        <li><strong>Upload .CS Files:</strong> Select one or multiple C# files directly.</li>
+                                        <li><strong>Local Path:</strong> Type any directory or file path on your machine.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card border h-100 p-3 rounded-3 shadow-none">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <span class="badge bg-primary rounded-circle px-2 py-1">Step 2</span>
+                                        <h6 class="fw-bold text-dark mb-0">Analyze & Inspect</h6>
+                                    </div>
+                                    <p class="text-muted small">Click <strong>Analyze Project / Files</strong>.</p>
+                                    <ul class="small text-secondary ps-3 mb-0">
+                                        <li>Roslyn parses syntax trees across all source files.</li>
+                                        <li>Discovers all injected interfaces (e.g. <code>IRepository</code>, <code>IWorkflow</code>).</li>
+                                        <li>Populates the <strong>Target Class</strong> selector dropdown.</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="card border h-100 p-3 rounded-3 shadow-none">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <span class="badge bg-primary rounded-circle px-2 py-1">Step 3</span>
+                                        <h6 class="fw-bold text-dark mb-0">Generate & Export</h6>
+                                    </div>
+                                    <p class="text-muted small">Click <strong>Generate Automated Unit Test Suite</strong>.</p>
+                                    <ul class="small text-secondary ps-3 mb-0">
+                                        <li>Generates standard <strong>xUnit + Moq</strong> tests following Arrange-Act-Assert.</li>
+                                        <li>Includes AI defensive edge cases & null checks.</li>
+                                        <li>Copy, download <code>.cs</code>, download full project ZIP, or save directly to disk!</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: How Tests are Generated -->
+                    <div class="tab-pane fade" id="guide-howgen" role="tabpanel">
+                        <h6 class="fw-bold text-dark mb-2">Under the Hood: Microsoft Roslyn AST Code Analysis</h6>
+                        <p class="text-muted small">
+                            Unlike basic regex-based tools, this platform uses the official <strong>Microsoft.CodeAnalysis.CSharp (Roslyn)</strong> engine to understand your C# syntax and semantic structure deeply:
+                        </p>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <div class="p-3 border rounded-3 bg-white">
+                                    <h6 class="fw-bold text-primary small mb-1"><i class="ri-node-tree me-1"></i>1. Dependency Injection Extraction</h6>
+                                    <p class="text-muted small mb-0">
+                                        Roslyn scans constructors for injected interfaces (e.g., <code>IReturnInvoiceService</code>, <code>IWorkflow</code>, <code>IConfiguration</code>).
+                                        It generates <code>Mock&lt;T&gt;</code> fields for each dependency and instantiates the System Under Test (SUT) with <code>_mockDep.Object</code>.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="p-3 border rounded-3 bg-white">
+                                    <h6 class="fw-bold text-info small mb-1"><i class="ri-git-branch-line me-1"></i>2. Method & Branch Exploration</h6>
+                                    <p class="text-muted small mb-0">
+                                        For every public method, the engine inspects parameters, return types (synchronous and <code>async Task&lt;T&gt;</code>), and conditional statements (<code>if</code>, <code>switch</code>, null-coalescing <code>??</code>).
+                                        It generates test cases targeting both happy paths and branch conditions.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-dark text-white p-3 rounded-3 font-monospace small">
+                            <span class="text-secondary">// Example Generated Architecture</span><br/>
+                            <span class="text-info">public class</span> <span class="text-warning">WorkEvidenceServiceTests</span><br/>
+                            {<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-secondary">// 1. Mocks automatically declared for every injected interface</span><br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-info">private readonly</span> Mock&lt;IWorkEvidenceRepository&gt; _mockWorkEvidenceRepository;<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-info">private readonly</span> WorkEvidenceService _service;<br/><br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-secondary">// 2. Constructor sets up mocks and injects into SUT</span><br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-info">public</span> <span class="text-warning">WorkEvidenceServiceTests</span>()<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;{<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_mockWorkEvidenceRepository = <span class="text-info">new</span> Mock&lt;IWorkEvidenceRepository&gt;();<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_service = <span class="text-info">new</span> WorkEvidenceService(_mockWorkEvidenceRepository.Object);<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br/>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: How Tests Execute -->
+                    <div class="tab-pane fade" id="guide-howtest" role="tabpanel">
+                        <h6 class="fw-bold text-dark mb-2">How the Generated Tests Actually Run & Validate Code</h6>
+                        <p class="text-muted small">Every generated test follows the industry-standard <strong>AAA (Arrange-Act-Assert)</strong> pattern to guarantee deterministic, isolated unit testing:</p>
+
+                        <div class="table-responsive mb-3">
+                            <table class="table table-bordered table-sm small">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 120px;">Phase</th>
+                                        <th style="width: 200px;">Mechanism</th>
+                                        <th>What It Does</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge bg-primary">Arrange</span></td>
+                                        <td><strong>Moq Setups & Test Fixtures</strong></td>
+                                        <td>Prepares input variables and programs mock behavior (e.g. <code>_mockRepo.Setup(x => x.GetAsync(It.IsAny&lt;long&gt;())).ReturnsAsync(mockEntity)</code>). The test does NOT require a real database or network connection!</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-warning text-dark">Act</span></td>
+                                        <td><strong>Method Execution</strong></td>
+                                        <td>Invokes the actual target method on the service: <code>var result = await _service.AddWorkEvidenceDetails(payload);</code>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge bg-success">Assert</span></td>
+                                        <td><strong>FluentAssertions</strong></td>
+                                        <td>Verifies expected return values, state changes, or exceptions thrown (e.g. <code>result.Should().BeTrue();</code> or <code>_mockRepo.Verify(x => x.SaveAsync(...), Times.Once);</code>).</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="p-3 border rounded-3 bg-white">
+                            <h6 class="fw-bold text-dark small mb-1"><i class="ri-play-circle-line text-warning me-1"></i>Running via 'Execute dotnet test' or Visual Studio Test Explorer</h6>
+                            <p class="text-muted small mb-0">
+                                Once saved or downloaded, tests can be run directly inside Visual Studio Test Explorer (Ctrl+R, A), via the built-in <strong>Test Runner & Coverage</strong> tab on this page, or inside automated CI/CD pipelines (e.g. Azure Pipelines: <code>dotnet test --collect:"XPlat Code Coverage"</code>).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: AI & BRDs -->
+                    <div class="tab-pane fade" id="guide-ai" role="tabpanel">
+                        <h6 class="fw-bold text-dark mb-2">AI-Assisted Test Synthesis & Business Traceability</h6>
+                        <p class="text-muted small">
+                            While Roslyn handles compiler-grade syntax structures, the <strong>AI Test Assistant</strong> handles human-level business logic and defensive edge cases:
+                        </p>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <div class="card p-3 border rounded-3 h-100">
+                                    <h6 class="fw-bold text-primary small"><i class="ri-shield-cross-line me-1"></i>Defensive & Boundary Testing</h6>
+                                    <ul class="text-muted small ps-3 mb-0">
+                                        <li><strong>Null-Guard Resiliency:</strong> Verifies methods handle null parameters gracefully without unexpected <code>NullReferenceException</code> crashes.</li>
+                                        <li><strong>Boundary Identifiers:</strong> Tests zero, negative, or max integer values (e.g. <code>id = -1</code>).</li>
+                                        <li><strong>Negative Business States:</strong> Tests invalid or rejected workflow statuses.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card p-3 border rounded-3 h-100">
+                                    <h6 class="fw-bold text-success small"><i class="ri-file-search-line me-1"></i>BRD Document Ingestion</h6>
+                                    <ul class="text-muted small ps-3 mb-0">
+                                        <li><strong>Upload BRDs:</strong> Ingests PDFs, Word (.docx), Markdown, or Text files.</li>
+                                        <li><strong>Rule Extraction:</strong> Scans for keywords like <em>"must"</em>, <em>"should"</em>, <em>"verify"</em>, <em>"validation"</em>, <em>"approval"</em>.</li>
+                                        <li><strong>Traceability Matrix:</strong> Links each rule clause directly to generated unit test assertions.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info py-2 px-3 small d-flex align-items-center gap-2 mb-0">
+                            <i class="ri-lightbulb-line fs-5"></i>
+                            <span><strong>Zero-Config AI:</strong> By default, the Built-in Semantic AI Engine runs completely offline and locally without needing any API key or external service. You can also connect Ollama or OpenAI at any time via the <strong>AI Settings</strong> button!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer bg-light py-2">
+                <button type="button" class="btn btn-primary btn-sm rounded-pill px-4" data-bs-dismiss="modal">Got it, Let's Test!</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="light" data-sidebar-size="lg">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - i~ERP Automated Unit Test Engineering</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="i~ERP Enterprise Automated Unit Testing Platform" name="description" />
+    <meta content="IdeaInfinityIT" name="author" />
+    <link rel="shortcut icon" href="https://uat.cescom.ierpsuite.com/cmn_layout/frontend/assets/images/logo-light-sm.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Remix Icon & Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- Highlight.js for C# syntax -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+
+    <!-- Select2 Searchable Dropdown CSS (Standard across CESC MMS) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
+
+    <!-- DataTables Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" />
+
+    <!-- Module Specific CSS (Proper Naming) -->
+    <link rel="stylesheet" href="~/testgenmodulecss/unit_test_generator.css" asp-append-version="true" />
+</head>
+
+<body>
+    <!-- Top Navigation Header (Strictly NO Profile Icon) -->
+    <header class="topbar-header shadow-sm">
+        <div class="container-fluid d-flex align-items-center justify-content-between px-4 py-2">
+            <div class="d-flex align-items-center gap-3">
+                <div class="logo-box d-flex align-items-center gap-2">
+                    <div class="logo-circle">
+                        <i class="ri-shield-check-fill text-white fs-4"></i>
+                    </div>
+                    <div>
+                        <span class="fs-5 fw-bold text-white tracking-wide">i~ERP</span>
+                        <span class="badge bg-soft-light text-white ms-1 fw-semibold">Auto TestGen</span>
+                    </div>
+                </div>
+                <div class="vr bg-light opacity-25 mx-2" style="height: 28px;"></div>
+                <div class="header-breadcrumbs d-none d-md-flex flex-column">
+                    <span class="text-white-50 small fw-medium">Universal Test Engineering</span>
+                    <span class="text-white fw-semibold small">Roslyn AST + xUnit + Moq + AI Reasoning</span>
+                </div>
+            </div>
+
+            <!-- Right Controls: AI Engine Indicator & Quick Actions (NO Profile Icon) -->
+            <div class="d-flex align-items-center gap-3">
+                <!-- AI Engine Active Badge -->
+                <div class="ai-status-pill d-flex align-items-center gap-2 px-3 py-1 rounded-pill" id="aiHeaderStatusBadge">
+                    <span class="ai-pulse-dot"></span>
+                    <span class="fw-semibold text-white small" id="aiHeaderProviderLabel">AI Assistant: Ready</span>
+                </div>
+
+                <!-- Settings Button for AI -->
+                <button type="button" class="btn btn-outline-light btn-sm rounded-pill px-3 d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#aiConfigModal">
+                    <i class="ri-settings-4-line"></i>
+                    <span>AI Settings</span>
+                </button>
+
+                <!-- User Guide & Documentation Button -->
+                <button type="button" class="btn btn-warning text-dark btn-sm rounded-pill px-3 d-flex align-items-center gap-1 shadow-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#userGuideModal">
+                    <i class="ri-book-open-line"></i>
+                    <span>User Guide & Docs</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    @await Html.PartialAsync("~/Views/UnitTestGenerator/_UserGuideModal.cshtml")
+
+    <!-- Main Content Area -->
+    <main class="main-page-content py-4">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-bar text-center py-3 border-top bg-white">
+        <div class="container-fluid">
+            <span class="text-muted small">&copy; @DateTime.Now.Year IdeaInfinityIT - CESC i~ERP Automated Test Suite Generator. Standard xUnit &bull; Moq &bull; Coverlet &bull; AI Powered</span>
+        </div>
+    </footer>
+
+    <!-- Core Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/csharp.min.js"></script>
+    <!-- Select2 Searchable Dropdown JS (Standard across CESC MMS) -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- JSZip for Ultra-fast In-Memory Folder Zip Packaging (Bypasses multipart 1024 limits) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- DataTables for Review Grid (Step 8) -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+
+    <!-- Chart.js for Executive Dashboard & Metrics Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Module Specific Logic (Proper Naming) -->
+    <script src="~/testgenmodulejs/unit_test_generator.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

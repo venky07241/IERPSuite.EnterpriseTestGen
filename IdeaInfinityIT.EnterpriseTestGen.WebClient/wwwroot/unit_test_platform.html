@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>i~ERP | Automated Unit Testing Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Enterprise Automated Unit Testing Platform" name="description" />
+    <meta content="IdeaInfinityIT" name="author" />
+
+    <!-- Google Fonts: Poppins & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- RemixIcon & FontAwesome & Phosphor Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Custom i~ERP Testing Styles -->
+    <link href="css/unit_test_platform.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- Topbar / Navbar (Clean Header Without Profile Icon) -->
+    <header id="page-topbar">
+        <div class="layout-width">
+            <div class="navbar-header d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div class="navbar-brand-box">
+                        <span class="logo-lg">
+                            <span class="ierp-brand"><span class="ierp-accent">i~</span>ERP</span>
+                        </span>
+                    </div>
+                    <div class="header-divider mx-3"></div>
+                    <div class="header-title-box">
+                        <h5 class="m-0 fs-15 fw-semibold text-white">Universal Automated Unit Testing Platform</h5>
+                        <small class="text-white-50">Business-Driven • Roslyn AST • xUnit • Moq • Coverlet</small>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-success-subtle text-success fs-12 px-3 py-2 border border-success-subtle">
+                        <i class="ri-checkbox-circle-line me-1"></i> Engine Active (.NET 8)
+                    </span>
+                    <span class="badge bg-primary-subtle text-primary fs-12 px-3 py-2 border border-primary-subtle">
+                        <i class="ri-git-branch-line me-1"></i> Any .NET Solution
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <div class="main-content">
+        <div class="page-content container-fluid py-4 px-4">
+            
+            <!-- Breadcrumb Navigation -->
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="page-title-box d-flex align-items-center justify-content-between p-3 bg-white rounded shadow-sm">
+                        <h4 class="mb-0 fs-16 fw-semibold text-dark">
+                            <i class="ri-test-tube-line text-primary me-2"></i> Automated Business-Driven Unit Test Generator
+                        </h4>
+                        <div class="page-title-right">
+                            <ol class="breadcrumb m-0 fs-13">
+                                <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-muted">Home</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);" class="text-muted">Quality Assurance</a></li>
+                                <li class="breadcrumb-item active text-primary fw-semibold">Universal Unit Testing</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metrics KPI Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-xl-2 col-md-4 col-sm-6">
+                    <div class="card card-animate border-0 shadow-sm border-start border-4 border-primary">
+                        <div class="card-body p-3">
+                            <p class="text-uppercase fw-semibold fs-11 text-muted mb-1">Target Classes</p>
+                            <h4 class="fs-20 fw-bold mb-0 text-primary" id="kpiClasses">-</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-4 col-sm-6">
+                    <div class="card card-animate border-0 shadow-sm border-start border-4 border-info">
+                        <div class="card-body p-3">
+                            <p class="text-uppercase fw-semibold fs-11 text-muted mb-1">Public Methods</p>
+                            <h4 class="fs-20 fw-bold mb-0 text-info" id="kpiMethods">-</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-4 col-sm-6">
+                    <div class="card card-animate border-0 shadow-sm border-start border-4 border-purple" style="border-left-color: #6f42c1 !important;">
+                        <div class="card-body p-3">
+                            <p class="text-uppercase fw-semibold fs-11 text-muted mb-1">BRD Rules Ingested</p>
+                            <h4 class="fs-20 fw-bold mb-0" style="color: #6f42c1;" id="kpiRules">-</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 col-sm-6">
+                    <div class="card card-animate border-0 shadow-sm border-start border-4 border-success">
+                        <div class="card-body p-3">
+                            <p class="text-uppercase fw-semibold fs-11 text-muted mb-1">Generated Tests</p>
+                            <h4 class="fs-20 fw-bold mb-0 text-success" id="kpiTests">-</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-2 col-md-6 col-sm-6">
+                    <div class="card card-animate border-0 shadow-sm border-start border-4 border-warning">
+                        <div class="card-body p-3">
+                            <p class="text-uppercase fw-semibold fs-11 text-muted mb-1">Target Coverage</p>
+                            <h4 class="fs-20 fw-bold mb-0 text-warning" id="kpiCoverage">88.5%</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Two-Column Layout (Input Configuration + Generated Output) -->
+            <div class="row g-4">
+                
+                <!-- Left Column: Open Inputs & Uploads -->
+                <div class="col-lg-5">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-white border-bottom align-items-center d-flex justify-content-between py-3">
+                            <h5 class="card-title mb-0 fs-15 text-dark fw-semibold">
+                                <i class="ri-equalizer-line text-primary me-2"></i> Configuration &amp; Inputs
+                            </h5>
+                            <span class="badge bg-light text-muted border">Input Configuration</span>
+                        </div>
+
+                        <div class="card-body">
+                            
+                            <!-- Step 1: Open Target C# Selection -->
+                            <fieldset class="border p-3 rounded mb-3 bg-light-subtle">
+                                <legend class="float-none w-auto px-2 fs-13 fw-semibold m-0 text-primary">
+                                    <span class="badge bg-primary">Step 1: Target C# Class, Project, or Directory</span>
+                                </legend>
+                                <div class="mb-2">
+                                    <label class="form-label fs-13 fw-semibold text-secondary">
+                                        Enter any target path on your machine:
+                                    </label>
+                                    <input type="text" class="form-control fs-13" id="targetPath" 
+                                           placeholder="e.g. C:\MyProjects\Service.cs or D:\Repo\src\Project.csproj" />
+                                </div>
+                                <div class="d-flex align-items-center justify-content-between mt-2 pt-2 border-top">
+                                    <small class="text-muted fs-12">Or upload a single C# source file directly:</small>
+                                    <input type="file" id="csFileInput" accept=".cs" style="display:none;" />
+                                    <button type="button" class="btn btn-xs btn-outline-primary" onclick="$('#csFileInput').click()">
+                                        <i class="ri-file-upload-line me-1"></i> Upload .cs file
+                                    </button>
+                                </div>
+                                <div id="csUploadBadge" class="mt-2 text-primary fs-12 fw-medium" style="display:none;"></div>
+                            </fieldset>
+
+                            <!-- Step 2: Business Document (BRD) Upload -->
+                            <fieldset class="border p-3 rounded mb-3 bg-light-subtle">
+                                <legend class="float-none w-auto px-2 fs-13 fw-semibold m-0 text-success">
+                                    <span class="badge bg-success">Step 2: Business Document (BRD / Spec / PDF / Text)</span>
+                                </legend>
+                                
+                                <div class="dropzone-box text-center p-3 border border-2 border-dashed rounded bg-white" id="dropZone">
+                                    <input type="file" id="brdFileInput" style="display:none;" accept=".txt,.pdf,.docx,.doc,.md">
+                                    <div class="my-2">
+                                        <i class="ri-file-text-line fs-32 text-success"></i>
+                                    </div>
+                                    <h6 class="fs-13 fw-semibold mb-1">Drag &amp; Drop your Business Document here</h6>
+                                    <p class="text-muted fs-11 mb-2">Supports PDF, Word (.docx), Markdown (.md), or Plain Text</p>
+                                    <button type="button" class="btn btn-sm btn-outline-success px-3" onclick="$('#brdFileInput').click()">
+                                        <i class="ri-folder-open-line me-1"></i> Browse Document
+                                    </button>
+                                    <div id="fileUploadInfo" class="mt-2 text-success fw-medium fs-12" style="display:none;"></div>
+                                </div>
+                            </fieldset>
+
+                            <!-- Step 3: User Custom Scenarios (YAML) -->
+                            <fieldset class="border p-3 rounded mb-3 bg-light-subtle">
+                                <legend class="float-none w-auto px-2 fs-13 fw-semibold m-0" style="color: #6f42c1;">
+                                    <span class="badge" style="background-color: #6f42c1; color: white;">Step 3: User Custom Scenarios (YAML)</span>
+                                </legend>
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <label class="form-label fs-12 fw-semibold text-secondary m-0">
+                                        Define custom edge cases / overrides:
+                                    </label>
+                                    <button type="button" class="btn btn-xs btn-link p-0 text-decoration-none" onclick="clearYaml()">Clear</button>
+                                </div>
+                                <textarea id="customYaml" class="form-control font-monospace fs-12" rows="5" spellcheck="false" 
+                                          placeholder="targetClass: MyService&#10;targetMethod: MyMethod&#10;customTestCases:&#10;  - name: ValidInput_ReturnsSuccess&#10;    description: Tests valid input handling&#10;    given:&#10;      id: 10&#10;    expected:&#10;      responseStatus: Success"></textarea>
+                            </fieldset>
+
+                            <!-- Step 4: Destination Directory (Optional) -->
+                            <fieldset class="border p-3 rounded mb-3 bg-light-subtle">
+                                <legend class="float-none w-auto px-2 fs-13 fw-semibold m-0 text-muted">
+                                    <span class="badge bg-secondary">Step 4: Output Destination (Optional)</span>
+                                </legend>
+                                <label class="form-label fs-12 text-secondary mb-1">
+                                    Test files will be saved here (Leave empty for default <code>./GeneratedTests</code>):
+                                </label>
+                                <input type="text" class="form-control fs-12" id="destDirectory" 
+                                       placeholder="e.g. C:\MyProject\tests\MyProject.Tests" />
+                            </fieldset>
+
+                            <!-- Primary Action Buttons -->
+                            <div class="d-flex gap-2 justify-content-end mt-3">
+                                <button type="button" class="btn btn-outline-secondary px-3" id="btnAnalyze">
+                                    <i class="ri-search-eye-line me-1"></i> Analyze C# (Roslyn)
+                                </button>
+                                <button type="button" class="btn btn-primary px-4 fw-medium" id="btnGenerate">
+                                    <i class="ri-play-circle-line me-1"></i> Generate Unit Tests
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Generated Test Suite & Live Execution -->
+                <div class="col-lg-7">
+                    <div class="card border-0 shadow-sm h-100 d-flex flex-column">
+                        <div class="card-header bg-white border-bottom align-items-center d-flex justify-content-between py-2">
+                            <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active fw-medium fs-14" data-bs-toggle="tab" href="#tabGeneratedCode" role="tab">
+                                        <i class="ri-code-s-slash-line me-1"></i> Generated xUnit Code
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-medium fs-14" data-bs-toggle="tab" href="#tabTraceability" role="tab">
+                                        <i class="ri-node-tree me-1"></i> Traceability Matrix
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-medium fs-14" data-bs-toggle="tab" href="#tabTerminal" role="tab">
+                                        <i class="ri-terminal-box-line me-1"></i> Execution Console
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <div class="d-flex gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" id="btnCopyCode" title="Copy to Clipboard">
+                                    <i class="ri-file-copy-line me-1"></i> Copy
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="btnDownloadCode" title="Download C# File">
+                                    <i class="ri-download-2-line me-1"></i> Download
+                                </button>
+                                <button type="button" class="btn btn-sm btn-success fw-medium" id="btnSaveAndRun">
+                                    <i class="ri-save-line me-1"></i> Save to Project
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body p-0 flex-grow-1 d-flex flex-column">
+                            <div class="tab-content flex-grow-1 d-flex flex-column">
+                                
+                                <!-- Tab 1: Generated Code -->
+                                <div class="tab-pane active flex-grow-1 d-flex flex-column" id="tabGeneratedCode" role="tabpanel">
+                                    <div class="code-editor-bar d-flex justify-content-between align-items-center px-3 py-2 bg-light border-bottom">
+                                        <span class="fs-12 fw-semibold text-primary font-monospace" id="lblGeneratedFile">
+                                            <i class="ri-file-code-line me-1"></i> Test Suite Preview
+                                        </span>
+                                        <span class="badge bg-secondary-subtle text-secondary fs-11">xUnit + Moq + FluentAssertions</span>
+                                    </div>
+                                    <div class="code-preview-scroll flex-grow-1 p-3">
+                                        <pre class="m-0"><code id="codeViewer" class="font-monospace fs-12 text-dark">// Ready for generation.
+// Specify any C# project or file path on the left and click 'Generate Unit Tests'.
+// The generated tests with Moq setups will appear here.</code></pre>
+                                    </div>
+                                </div>
+
+                                <!-- Tab 2: Traceability Matrix -->
+                                <div class="tab-pane flex-grow-1 p-3" id="tabTraceability" role="tabpanel">
+                                    <h6 class="fs-14 fw-semibold text-dark mb-2">
+                                        <i class="ri-shield-check-line text-success me-1"></i> Requirements to Test Case Mapping
+                                    </h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered table-hover align-middle fs-12">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Test Case Name</th>
+                                                    <th>Target Method</th>
+                                                    <th>Source / Origin</th>
+                                                    <th>Assertion Type</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="traceabilityTableBody">
+                                                <tr>
+                                                    <td colspan="4" class="text-center text-muted py-3">
+                                                        No tests generated yet. Click 'Generate Unit Tests' to view traceability.
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Tab 3: Execution Terminal -->
+                                <div class="tab-pane flex-grow-1 p-3 bg-dark text-light" id="tabTerminal" role="tabpanel">
+                                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-secondary">
+                                        <span class="fs-13 fw-semibold text-info font-monospace">
+                                            <i class="ri-terminal-line me-1"></i> Engine Execution Stream
+                                        </span>
+                                        <span class="badge bg-success" id="badgeEngineState">Ready</span>
+                                    </div>
+                                    <pre class="m-0 font-monospace fs-12 text-success-emphasis terminal-stream" id="terminalStream">
+[EnterpriseTestGen] Initialized universal engine successfully.
+[Roslyn] Ready to analyze AST and constructor dependencies.
+[Moq] Mock generator ready.
+[System] Ready to run on any .NET 8 / C# project.
+                                    </pre>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Card Footer Status -->
+                        <div class="card-footer bg-light border-top px-3 py-2 d-flex justify-content-between align-items-center fs-12 text-muted">
+                            <div>
+                                <i class="ri-information-line text-primary me-1"></i>
+                                Tests run in an isolated in-memory sandbox. Production code is never altered.
+                            </div>
+                            <div class="fw-semibold text-dark" id="lblLastAction">Ready</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/unit_test_platform.js"></script>
+</body>
+</html>

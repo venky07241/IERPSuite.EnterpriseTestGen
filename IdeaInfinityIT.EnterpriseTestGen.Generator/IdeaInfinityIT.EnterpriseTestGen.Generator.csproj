@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>IdeaInfinityIT.EnterpriseTestGen.Generator</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\IdeaInfinityIT.EnterpriseTestGen.Core\IdeaInfinityIT.EnterpriseTestGen.Core.csproj" />
+    <ProjectReference Include="..\IdeaInfinityIT.EnterpriseTestGen.Roslyn\IdeaInfinityIT.EnterpriseTestGen.Roslyn.csproj" />
+    <ProjectReference Include="..\IdeaInfinityIT.EnterpriseTestGen.CustomCases\IdeaInfinityIT.EnterpriseTestGen.CustomCases.csproj" />
+    <ProjectReference Include="..\IdeaInfinityIT.EnterpriseTestGen.Business\IdeaInfinityIT.EnterpriseTestGen.Business.csproj" />
+  </ItemGroup>
+
+</Project>

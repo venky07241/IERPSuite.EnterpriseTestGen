@@ -1,0 +1,710 @@
+@model IdeaInfinityIT.EnterpriseTestGen.WebClient.Models.UnitTestGeneratorViewModel
+@{
+    ViewData["Title"] = "Enterprise Test Studio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid px-xl-4 px-3 py-3">
+    <!-- Header Title Bar -->
+    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
+        <div>
+            <h4 class="mb-1 fw-bold text-dark d-flex align-items-center gap-2">
+                <i class="ri-shield-flash-line text-primary fs-3"></i>
+                Enterprise Automated Unit Testing Studio
+            </h4>
+            <div class="text-muted small">
+                Automated xUnit + Moq test generation for integrated <strong>WebClient (MVC)</strong> and <strong>Core Server (Web API & Services)</strong>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3 shadow-xs" data-bs-toggle="collapse" data-bs-target="#dashboardChartsCollapse">
+                <i class="ri-pie-chart-2-line me-1"></i>Visual Metrics Chart
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-3 shadow-sm" onclick="resetForm()">
+                <i class="ri-refresh-line me-1"></i>Reset
+            </button>
+            <button type="button" class="btn btn-warning text-dark btn-sm rounded-pill px-3 shadow-sm fw-semibold" data-bs-toggle="modal" data-bs-target="#userGuideModal">
+                <i class="ri-book-open-line me-1"></i>Help & Guide
+            </button>
+        </div>
+    </div>
+
+    <!-- Executive KPI Dashboard Grid (Clean 6-Card Responsive Grid) -->
+    <div class="row g-3 row-cols-2 row-cols-md-3 row-cols-xl-6 mb-4">
+        <!-- Card 1: Projects Analyzed -->
+        <div class="col">
+            <div class="kpi-metric-card kpi-projects">
+                <div class="kpi-header">
+                    <span class="kpi-title">Projects</span>
+                    <div class="kpi-icon-wrap"><i class="ri-git-merge-line"></i></div>
+                </div>
+                <div class="kpi-value text-indigo" id="dashProjectsCount">0</div>
+                <div class="kpi-subtitle" id="dashProjectsLabel">0 Projects</div>
+            </div>
+        </div>
+        <!-- Card 2: Classes Analyzed -->
+        <div class="col">
+            <div class="kpi-metric-card kpi-classes">
+                <div class="kpi-header">
+                    <span class="kpi-title">Classes</span>
+                    <div class="kpi-icon-wrap"><i class="ri-file-code-line"></i></div>
+                </div>
+                <div class="kpi-value text-slate" id="dashClassesCount">0</div>
+                <div class="kpi-subtitle" id="dashSourceFilesLabel">0 Files</div>
+            </div>
+        </div>
+        <!-- Card 3: Methods Analyzed -->
+        <div class="col">
+            <div class="kpi-metric-card kpi-methods">
+                <div class="kpi-header">
+                    <span class="kpi-title">Methods</span>
+                    <div class="kpi-icon-wrap"><i class="ri-function-line"></i></div>
+                </div>
+                <div class="kpi-value text-cyan" id="dashMethodsCount">0</div>
+                <div class="kpi-subtitle">Public & Action APIs</div>
+            </div>
+        </div>
+        <!-- Card 4: Test Cases Identified -->
+        <div class="col">
+            <div class="kpi-metric-card kpi-cases">
+                <div class="kpi-header">
+                    <span class="kpi-title">Test Cases</span>
+                    <div class="kpi-icon-wrap"><i class="ri-list-check-2"></i></div>
+                </div>
+                <div class="kpi-value text-amber" id="dashTestCasesCount">0</div>
+                <div class="kpi-subtitle" id="dashApprovedBadge">0 Approved</div>
+            </div>
+        </div>
+        <!-- Card 5: Tests Passed / Failed -->
+        <div class="col">
+            <div class="kpi-metric-card kpi-tests">
+                <div class="kpi-header">
+                    <span class="kpi-title">Execution</span>
+                    <div class="kpi-icon-wrap"><i class="ri-checkbox-circle-line"></i></div>
+                </div>
+                <div class="kpi-value"><span class="text-emerald" id="dashTestsPassed">0</span> <span class="text-muted fs-6">/</span> <span class="text-rose" id="dashTestsFailed">0</span></div>
+                <div class="kpi-subtitle">Passed / Failed</div>
+            </div>
+        </div>
+        <!-- Card 6: Line / Branch Coverage -->
+        <div class="col">
+            <div class="kpi-metric-card kpi-coverage">
+                <div class="kpi-header">
+                    <span class="kpi-title">Coverage</span>
+                    <div class="kpi-icon-wrap"><i class="ri-pie-chart-line"></i></div>
+                </div>
+                <div class="kpi-value"><span class="text-indigo" id="dashLineCov">0%</span> <span class="text-muted fs-6">/</span> <span class="text-teal" id="dashBranchCov">0%</span></div>
+                <div class="kpi-subtitle">Line / Branch Real</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collapsible Visual Charts -->
+    <div class="collapse mb-4" id="dashboardChartsCollapse">
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-3 bg-light text-center">
+                        <span class="small fw-bold text-dark d-block mb-2">Synthesized Test Scenario Distribution</span>
+                        <div style="height: 200px; position: relative;">
+                            <canvas id="chartScenarioDistribution"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="border rounded-3 p-3 bg-light text-center">
+                        <span class="small fw-bold text-dark d-block mb-2">Testing Health & Coverage Overview</span>
+                        <div style="height: 200px; position: relative;">
+                            <canvas id="chartCoverageHealth"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Main 2-Column Responsive Workspace -->
+    <div class="row g-4">
+        <!-- Left Panel: Multi-Project & Solution Configuration -->
+        <div class="col-xl-4 col-lg-4">
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary rounded-circle px-2 py-1 fw-bold">1</span>
+                        <h6 class="mb-0 fw-bold text-dark">Target Projects (Web & Core API)</h6>
+                    </div>
+                    <span class="badge bg-soft-primary text-primary small fw-semibold" id="detectedRoleBadge">Ready to Scan</span>
+                </div>
+                <div class="card-body p-3">
+                    <!-- Project Mode Switcher -->
+                    <ul class="nav nav-pills nav-fill mb-3 bg-light p-1 rounded-pill" id="projectModeTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active rounded-pill py-1.5 small fw-semibold" id="tab-dual-mode" data-bs-toggle="pill" data-bs-target="#pane-dual-mode" type="button" role="tab">
+                                <i class="ri-git-merge-line me-1"></i>Dual Projects (Web + Core API)
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link rounded-pill py-1.5 small fw-semibold" id="tab-single-mode" data-bs-toggle="pill" data-bs-target="#pane-single-mode" type="button" role="tab">
+                                <i class="ri-file-code-line me-1"></i>Single Project / Path
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="projectModeTabContent">
+                        <!-- Dual Mode: Web Application + API Server + Existing Tests -->
+                        <div class="tab-pane fade show active" id="pane-dual-mode" role="tabpanel">
+                            <!-- 1. Web Application Project -->
+                            <div class="project-setup-card web-accent">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <label class="form-label small fw-bold text-dark mb-0">
+                                        <i class="ri-window-line text-indigo me-1"></i>Web Application (MVC / Razor):
+                                    </label>
+                                    <span class="badge bg-soft-primary small">Web Client</span>
+                                </div>
+                                <div class="input-group input-group-sm mb-2">
+                                    <input type="text" class="form-control" id="webProjectPathInput" placeholder="Folder path or browse system..." value="" />
+                                    <button class="btn btn-outline-primary" type="button" onclick="browseOrFetchFor('webProjectPathInput', 'webFolderInput')">
+                                        <i class="ri-folder-open-line me-1"></i>Fetch Folder
+                                    </button>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <input type="file" id="webFolderInput" webkitdirectory directory multiple class="d-none" />
+                                    <input type="file" id="webZipInput" accept=".zip" class="d-none" />
+                                    <button type="button" class="btn btn-light btn-xs border rounded-pill px-2.5 py-1 text-secondary" onclick="$('#webZipInput').click()">
+                                        <i class="ri-file-zip-line text-indigo me-1"></i>Or Web .ZIP
+                                    </button>
+                                    <span class="small text-muted text-truncate" id="webUploadNotice"></span>
+                                </div>
+                            </div>
+
+                            <!-- 2. Core API Server Project -->
+                            <div class="project-setup-card api-accent">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <label class="form-label small fw-bold text-dark mb-0">
+                                        <i class="ri-server-line text-emerald me-1"></i>Core API Server (Web API / Services):
+                                    </label>
+                                    <span class="badge bg-soft-success small">Core Server</span>
+                                </div>
+                                <div class="input-group input-group-sm mb-2">
+                                    <input type="text" class="form-control" id="apiProjectPathInput" placeholder="Folder path or browse system..." value="" />
+                                    <button class="btn btn-outline-success" type="button" onclick="browseOrFetchFor('apiProjectPathInput', 'apiFolderInput')">
+                                        <i class="ri-folder-open-line me-1"></i>Fetch Folder
+                                    </button>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <input type="file" id="apiFolderInput" webkitdirectory directory multiple class="d-none" />
+                                    <input type="file" id="apiZipInput" accept=".zip" class="d-none" />
+                                    <button type="button" class="btn btn-light btn-xs border rounded-pill px-2.5 py-1 text-secondary" onclick="$('#apiZipInput').click()">
+                                        <i class="ri-file-zip-line text-emerald me-1"></i>Or API .ZIP
+                                    </button>
+                                    <span class="small text-muted text-truncate" id="apiUploadNotice"></span>
+                                </div>
+                            </div>
+
+                            <!-- 3. Existing Test Project Path (Optional) -->
+                            <div class="project-setup-card test-accent">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <label class="form-label small fw-semibold text-secondary mb-0">
+                                        <i class="ri-test-tube-line text-amber me-1"></i>Existing Test Suite (Optional):
+                                    </label>
+                                    <span class="badge bg-soft-warning small">Existing Tests</span>
+                                </div>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control font-monospace" id="existingTestPathInput" placeholder="Optional: .csproj or directory..." value="" />
+                                    <button class="btn btn-outline-secondary" type="button" onclick="browseOrFetchFor('existingTestPathInput', 'existingTestFolderInput')">
+                                        <i class="ri-folder-open-line me-1"></i>Browse
+                                    </button>
+                                    <input type="file" id="existingTestFolderInput" webkitdirectory directory multiple class="d-none" />
+                                </div>
+                                <div class="form-text small text-muted mt-1">If specified, existing test cases will be scanned and verified.</div>
+                            </div>
+
+                            <!-- Dual Analysis Action Button -->
+                            <div class="d-grid my-3">
+                                <button type="button" class="btn btn-hero-scan w-100 py-2.5 shadow-sm" id="btnAnalyzeDualProjects">
+                                    <i class="ri-search-eye-line me-2 fs-5 align-middle"></i>Scan Web & API Projects (Dual Analysis)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Single Mode: Single Folder / Zip / Path -->
+                        <div class="tab-pane fade" id="pane-single-mode" role="tabpanel">
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold text-secondary">Target Project Path or .CS File Path:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="targetPathInput" placeholder="Fetch folder from system or enter directory path..." value="" />
+                                    <button type="button" class="btn btn-primary fw-semibold px-3" onclick="browseOrFetchFor('targetPathInput', 'folderUploadInput')">
+                                        <i class="ri-folder-open-line me-1"></i>Fetch Folder
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-2 flex-wrap mb-3">
+                                <input type="file" id="folderUploadInput" webkitdirectory directory multiple class="d-none" />
+                                <input type="file" id="projectZipInput" accept=".zip" class="d-none" />
+                                <input type="file" id="csharpFilesInput" accept=".cs" multiple class="d-none" />
+
+                                <button type="button" class="btn btn-light btn-sm border rounded-pill px-3 text-secondary" onclick="$('#projectZipInput').click()">
+                                    <i class="ri-file-zip-line text-primary me-1"></i>Upload Project .ZIP
+                                </button>
+                                <button type="button" class="btn btn-light btn-sm border rounded-pill px-3 text-secondary" onclick="$('#csharpFilesInput').click()">
+                                    <i class="ri-file-code-line text-info me-1"></i>Upload .CS Files
+                                </button>
+                            </div>
+                            <div id="fileUploadStatusNotice" class="alert alert-success py-1 px-2 small mb-3 d-none"></div>
+
+                            <div class="d-grid mb-3">
+                                <button type="button" class="btn btn-outline-primary btn-sm rounded-pill fw-semibold py-2" id="btnAnalyzeProject">
+                                    <i class="ri-search-eye-line me-1"></i>Scan Project & Discover Classes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discovered Classes Dropdown Section with Integrated Search Engine -->
+                    <div id="projectDiscoverySection" class="p-3 bg-light rounded-3 border d-none">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <label class="form-label small fw-bold text-dark mb-0">
+                                <i class="ri-search-2-line text-primary me-1"></i>Select Target Class to Test:
+                            </label>
+                            <span class="badge bg-primary small" id="discoveryStatsBadge">0 Classes</span>
+                        </div>
+
+                        <!-- Integrated Search Engine Bar -->
+                        <div class="input-group input-group-sm mb-2 shadow-xs">
+                            <span class="input-group-text bg-white border-end-0 text-muted">
+                                <i class="ri-search-line"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0 ps-1" id="classSearchInput" placeholder="🔍 Search class name, role or method (e.g. Estimate, PurchaseOrder)..." autocomplete="off" />
+                            <button class="btn btn-outline-secondary btn-sm" type="button" id="btnClearClassSearch" title="Clear search">
+                                <i class="ri-close-line"></i>
+                            </button>
+                        </div>
+
+                        <!-- Category Filter Chips -->
+                        <div class="d-flex align-items-center gap-1 flex-wrap mb-2" id="classCategoryFilters">
+                            <button type="button" class="btn btn-xs btn-primary rounded-pill py-0 px-2 filter-chip active-filter" data-filter="all">All</button>
+                            <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill py-0 px-2 filter-chip" data-filter="controllers">Controllers</button>
+                            <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill py-0 px-2 filter-chip" data-filter="services">Services</button>
+                            <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill py-0 px-2 filter-chip" data-filter="methods-only">With Methods (&gt;0)</button>
+                        </div>
+
+                        <!-- Searchable Select Dropdown (Select2) -->
+                        <div class="mb-2">
+                            <select class="form-select form-select-sm fw-medium text-dark" id="classSelectorDropdown" data-placeholder="Choose or search target class...">
+                                <option value="ALL">📦 ALL CLASSES (Batch Suite Generation)</option>
+                            </select>
+                        </div>
+
+                        <div class="text-muted small mb-2" id="selectedClassRoleText"></div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Business Rules or Custom Cases (Completely Optional) -->
+            <div class="card shadow-sm border-0 rounded-3 mb-4">
+                <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-secondary rounded-circle px-2 py-1 fw-bold">2</span>
+                        <h6 class="mb-0 fw-bold text-dark">Business Rules & Custom Scenarios</h6>
+                    </div>
+                    <span class="badge bg-light text-muted small fw-normal border">Optional</span>
+                </div>
+                <div class="card-body p-3">
+                    <div class="alert alert-info py-2 px-3 small mb-3 d-flex align-items-center gap-2">
+                        <i class="ri-lightbulb-line fs-5 text-primary"></i>
+                        <span><strong>Fully Automated:</strong> If you don't upload a document or custom cases, the studio automatically synthesizes all test cases on its own from code!</span>
+                    </div>
+
+                    <!-- Optional BRD Upload -->
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold text-secondary d-flex justify-content-between">
+                            <span>Upload Business Document (BRD)</span>
+                            <span class="text-muted small">PDF, Word, Text, MD</span>
+                        </label>
+                        <div class="input-group input-group-sm">
+                            <input type="file" class="form-control" id="brdFileInput" accept=".pdf,.docx,.txt,.md" />
+                            <button class="btn btn-outline-secondary" type="button" onclick="$('#brdFileInput').val('')">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Optional YAML Custom Scenarios -->
+                    <div class="accordion" id="accordionCustomCases">
+                        <div class="accordion-item border rounded-3 overflow-hidden">
+                            <h2 class="accordion-header" id="headingYaml">
+                                <button class="accordion-button collapsed py-2 small fw-semibold text-dark bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseYaml">
+                                    <i class="ri-file-list-3-line text-warning me-2"></i>Add Custom Test Scenarios (YAML)
+                                </button>
+                            </h2>
+                            <div id="collapseYaml" class="accordion-collapse collapse" data-bs-parent="#accordionCustomCases">
+                                <div class="accordion-body p-3">
+                                    <div class="d-flex align-items-center justify-content-between mb-2">
+                                        <span class="small text-muted">Declare Arrange inputs and Expected outputs:</span>
+                                        <button type="button" class="btn btn-outline-warning btn-sm py-0 px-2 small rounded-pill fw-semibold" id="btnLoadSampleYaml">
+                                            <i class="ri-magic-line me-1"></i>Load Sample
+                                        </button>
+                                    </div>
+                                    <textarea class="form-control font-monospace small" id="customYamlEditor" rows="5" placeholder="targetClass: PurchaseOrderBaseController&#10;targetMethod: GetAllPurchaseOrderAsync&#10;customTestCases:&#10;  - name: StatusApproved_ShouldReturnSuccess&#10;    given:&#10;      status: A&#10;    expected:&#10;      status: 200"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: AI Toggle -->
+            <div class="card shadow-sm border-0 rounded-3">
+                <div class="card-body p-3">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="ri-brain-line text-primary fs-5"></i>
+                            <div>
+                                <span class="small fw-semibold text-dark d-block">AI Edge-Case & Null-Guard Synthesis</span>
+                                <span class="small text-muted">Suggests boundary tests and defensive assertions</span>
+                            </div>
+                        </div>
+                        <div class="form-check form-switch m-0">
+                            <input class="form-check-input cursor-pointer" type="checkbox" role="switch" id="enableAiSwitch" checked>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Test Cases Review, Generated Code, Diagnostics, Runner -->
+        <div class="col-xl-8 col-lg-8">
+            <div class="card shadow-sm border-0 rounded-4 h-100 d-flex flex-column">
+                <!-- Status Bar & Actions Header -->
+                <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="badge bg-primary fw-semibold px-3 py-1.5 rounded-pill" id="activeClassNameBadge">No Class Analyzed</span>
+                        <span class="badge bg-light text-secondary border fw-medium px-2.5 py-1.5 rounded-pill" id="activeRoleBadge">Awaiting Input</span>
+                        <span class="badge bg-success d-none px-2.5 py-1.5 rounded-pill" id="compilationSuccessBadge"><i class="ri-check-double-line me-1"></i>Syntax Validated (0 Errors)</span>
+                        <span class="badge bg-danger d-none px-2.5 py-1.5 rounded-pill" id="compilationErrorBadge"><i class="ri-error-warning-line me-1"></i>Errors Detected</span>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex align-items-center gap-2">
+                        <button type="button" class="btn btn-light btn-sm rounded-pill px-3 border shadow-xs" id="btnCopyCode" title="Copy C# Code">
+                            <i class="ri-file-copy-line me-1"></i>Copy
+                        </button>
+                        <button type="button" class="btn btn-light btn-sm rounded-pill px-3 border shadow-xs" id="btnDownloadSingleCode" title="Download .CS File">
+                            <i class="ri-download-2-line me-1"></i>Download .cs
+                        </button>
+                        <button type="button" class="btn btn-light btn-sm rounded-pill px-3 border shadow-xs" id="btnDownloadZip" title="Download All Tests as ZIP">
+                            <i class="ri-file-zip-line text-primary me-1"></i>Download ZIP
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm rounded-pill px-3.5 shadow-sm fw-semibold" id="btnSaveToProject">
+                            <i class="ri-save-line me-1"></i>Save
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Diagnostics & Error Alert Box -->
+                <div id="diagnosticsErrorAlert" class="alert alert-danger m-3 mb-0 p-3 rounded-3 d-none">
+                    <div class="d-flex align-items-center gap-2 fw-bold mb-1">
+                        <i class="ri-alarm-warning-line fs-5"></i>
+                        <span>Compiler Diagnostics Check: Issues Found in Generated Tests</span>
+                    </div>
+                    <div class="small mb-2 text-danger-emphasis">The Roslyn compiler identified the following issues in the generated test code:</div>
+                    <ul class="mb-0 ps-3 small font-monospace" id="diagnosticsErrorList"></ul>
+                </div>
+
+                <!-- Navigation Tabs: Test Cases Explorer is First & Default -->
+                <div class="px-3 pt-2 bg-light border-bottom">
+                    <ul class="nav nav-tabs card-header-tabs" id="outputTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-semibold text-dark small" id="tab-cases" data-bs-toggle="tab" data-bs-target="#pane-cases" type="button" role="tab">
+                                <i class="ri-list-check-2 text-info me-1"></i>Test Cases Review (Step 8)
+                                <span class="badge bg-primary text-white ms-1 small rounded-pill px-2" id="testCasesCountBadge">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold text-dark small" id="tab-code" data-bs-toggle="tab" data-bs-target="#pane-code" type="button" role="tab">
+                                <i class="ri-code-s-slash-line text-primary me-1"></i>Generated C# Test Class
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold text-dark small" id="tab-mappings" data-bs-toggle="tab" data-bs-target="#pane-mappings" type="button" role="tab">
+                                <i class="ri-links-line text-success me-1"></i>Web-to-API Mappings
+                                <span class="badge bg-secondary ms-1 small" id="mappingsCountBadge">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold text-dark small" id="tab-diagnostics" data-bs-toggle="tab" data-bs-target="#pane-diagnostics" type="button" role="tab">
+                                <i class="ri-bug-line text-danger me-1"></i>Diagnostics & Errors
+                                <span class="badge bg-secondary ms-1 small" id="diagnosticsCountBadge">0</span>
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold text-dark small" id="tab-runner" data-bs-toggle="tab" data-bs-target="#pane-runner" type="button" role="tab">
+                                <i class="ri-play-circle-line text-warning me-1"></i>Test Runner (`dotnet test`)
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold text-dark small" id="tab-traceability" data-bs-toggle="tab" data-bs-target="#pane-traceability" type="button" role="tab">
+                                <i class="ri-node-tree text-success me-1"></i>BRD Traceability
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Tab Contents -->
+                <div class="card-body p-0 flex-grow-1 position-relative d-flex flex-column">
+                    <div class="tab-content flex-grow-1 d-flex flex-column">
+
+                        <!-- Tab 1: Test Cases Review Matrix (Step 8 - BEFORE Code Generation) -->
+                        <div class="tab-pane fade show active p-3" id="pane-cases" role="tabpanel">
+                            <div class="card border rounded-4 p-3 mb-3 bg-light shadow-xs">
+                                <!-- Top Row: Header & Primary Actions -->
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3 pb-3 border-bottom">
+                                    <div>
+                                        <div class="fw-bold text-dark fs-6 d-flex align-items-center gap-2">
+                                            <span>Step 8: Interactive Test Cases Review & Approval</span>
+                                            <span class="badge bg-primary rounded-pill px-3 py-1" id="approvedCasesBadge">0 Approved</span>
+                                        </div>
+                                        <div class="text-muted small">Inspect, approve, edit, or customize test scenarios before compiling into C# test code.</div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold shadow-xs" onclick="openAddCustomCaseModal()">
+                                            <i class="ri-add-line me-1"></i>Add Custom Case
+                                        </button>
+                                        <button type="button" class="btn btn-outline-warning text-dark btn-sm rounded-pill px-3 fw-semibold shadow-xs d-none" id="btnUpdateExistingSuite" onclick="updateExistingTestSuiteAction()">
+                                            <i class="ri-loop-right-line me-1"></i>Update Existing Test Suite
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-3 shadow-xs fw-semibold" id="btnExportCasesCsv" title="Export Test Cases to CSV">
+                                            <i class="ri-file-excel-2-line me-1"></i>Export Matrix
+                                        </button>
+                                        <!-- Primary Action CTA -->
+                                        <button type="button" class="btn btn-hero-scan btn-sm px-4 shadow-sm" id="btnGenerateFromApproved" onclick="generateUnitTestsFromApprovedCases()">
+                                            <i class="ri-play-fill me-1"></i>Generate Unit Tests from Approved Cases
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Bottom Row: Search, Category Filters, and Bulk Actions -->
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                    <div class="d-flex align-items-center gap-2 flex-grow-1 flex-wrap" style="min-width: 280px;">
+                                        <div class="input-group input-group-sm" style="max-width: 250px;">
+                                            <span class="input-group-text bg-white border-end-0 text-muted"><i class="ri-search-line"></i></span>
+                                            <input type="text" class="form-control border-start-0" id="testCaseSearchInput" placeholder="🔍 Search test cases..." />
+                                            <button class="btn btn-outline-secondary" type="button" id="btnClearCaseSearch" title="Clear"><i class="ri-close-line"></i></button>
+                                        </div>
+                                        <div class="d-flex align-items-center gap-1 flex-wrap">
+                                            <button type="button" class="btn btn-xs case-filter-chip active-filter" data-category="all">All</button>
+                                            <button type="button" class="btn btn-xs case-filter-chip" data-project="web">Web Client</button>
+                                            <button type="button" class="btn btn-xs case-filter-chip" data-project="api">Core API</button>
+                                            <button type="button" class="btn btn-xs case-filter-chip" data-category="HappyPath">Happy Path</button>
+                                            <button type="button" class="btn btn-xs case-filter-chip" data-category="NullValidation">Null Guard</button>
+                                            <button type="button" class="btn btn-xs case-filter-chip" data-category="Boundary">Boundary</button>
+                                            <button type="button" class="btn btn-xs case-filter-chip" data-category="ExistingCovered">Existing Tests</button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-1 flex-wrap">
+                                        <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill px-2.5" onclick="selectAllReviewCases(true)">Select All</button>
+                                        <button type="button" class="btn btn-xs btn-outline-secondary rounded-pill px-2.5" onclick="selectAllReviewCases(false)">Deselect All</button>
+                                        <button type="button" class="btn btn-xs btn-outline-success rounded-pill px-2.5" onclick="approveSelectedReviewCases(true)">Approve Selected</button>
+                                        <button type="button" class="btn btn-xs btn-outline-danger rounded-pill px-2.5" onclick="approveSelectedReviewCases(false)">Reject Selected</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Interactive DataTable -->
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered align-middle small" id="tblTestCases">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 40px;" class="text-center">
+                                                <input type="checkbox" id="chkSelectAllCases" checked onchange="toggleSelectAllCases(this)" />
+                                            </th>
+                                            <th style="width: 100px;">Test ID</th>
+                                            <th style="width: 110px;">Project</th>
+                                            <th>Target Class & Method</th>
+                                            <th style="width: 130px;">Category</th>
+                                            <th>Arrange / Inputs</th>
+                                            <th>Expected Assertion</th>
+                                            <th style="width: 110px;">Source</th>
+                                            <th style="width: 90px;">Status</th>
+                                            <th style="width: 70px;" class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="testCasesTableBody">
+                                        <tr>
+                                            <td colspan="10" class="text-center text-muted py-4">
+                                                <i class="ri-search-eye-line fs-3 d-block text-secondary mb-1"></i>
+                                                Click <strong>'Scan Web & API Projects'</strong> to synthesize test cases.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Tab 2: C# Test Code -->
+                        <div class="tab-pane fade flex-grow-1 d-flex flex-column" id="pane-code" role="tabpanel">
+                            <div class="code-editor-container position-relative flex-grow-1 bg-dark text-white rounded-bottom-3 overflow-auto" id="codeEditorContainer" style="min-height: 520px; max-height: 750px;">
+                                <div class="d-flex align-items-center justify-content-between px-3 py-2 bg-black bg-opacity-75 border-bottom border-secondary border-opacity-25 small text-white-50 sticky-top">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span id="codeEditorStatusText">xUnit + Moq + FluentAssertions</span>
+                                        <span class="badge bg-secondary font-monospace" id="codeLineCount">0 lines</span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="input-group input-group-sm" style="max-width: 250px;">
+                                            <input type="text" class="form-control form-control-sm bg-dark text-white border-secondary small" id="codeSearchInput" placeholder="Find in code..." />
+                                            <button class="btn btn-outline-secondary btn-sm text-light" type="button" id="btnCodeSearchNext" title="Next match"><i class="ri-arrow-down-s-line"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex position-relative code-container-body">
+                                    <div class="code-gutter-numbers text-secondary user-select-none py-3 px-2 text-end font-monospace small bg-black bg-opacity-25 border-end border-secondary border-opacity-25" id="codeGutterNumbers" style="min-width: 48px;"></div>
+                                    <pre class="m-0 p-3 flex-grow-1 text-light" style="overflow-x: auto;"><code class="language-csharp font-monospace small" id="generatedCodeDisplay">// Review test cases in 'Test Cases Review (Step 8)' and click 'Generate Unit Tests from Approved Cases'.</code></pre>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab 3: Web-to-API Communication Mappings -->
+                        <div class="tab-pane fade p-3" id="pane-mappings" role="tabpanel">
+                            <div class="card border rounded-3 p-3 mb-3 bg-light">
+                                <div class="fw-bold text-dark">Web-to-API Integration Architecture</div>
+                                <div class="text-muted small">Maps how MVC Web Client controllers call Core Server Web API endpoints via HttpClient and DTOs.</div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered align-middle small" id="tblWebToApi">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Web Controller & Action</th>
+                                            <th>HTTP Method</th>
+                                            <th>Target API Endpoint</th>
+                                            <th>Target Core API Controller</th>
+                                            <th>Integration Pattern</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="webToApiTableBody">
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">No dual project analysis performed yet. Click 'Scan Web & API Projects'.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Tab 4: Diagnostics & Errors Inspector -->
+                        <div class="tab-pane fade p-3" id="pane-diagnostics" role="tabpanel">
+                            <div class="card border rounded-3 p-3 mb-3 bg-light">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="ri-shield-check-line text-success fs-3" id="diagnosticsStatusIcon"></i>
+                                        <div>
+                                            <div class="fw-bold text-dark" id="diagnosticsHeaderTitle">Roslyn Syntax & Compiler Verification</div>
+                                            <div class="text-muted small" id="diagnosticsHeaderSubtitle">The generated C# test class is verified against the Roslyn C# syntax compiler.</div>
+                                        </div>
+                                    </div>
+                                    <span class="badge bg-success px-3 py-2 fw-semibold" id="diagnosticsStatusBadge">0 Errors</span>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-sm small align-middle" id="tblDiagnostics">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 80px;">Severity</th>
+                                            <th style="width: 170px;">Target File</th>
+                                            <th style="width: 220px;">Target Method</th>
+                                            <th style="width: 105px;">Location</th>
+                                            <th style="width: 105px;">Error Code</th>
+                                            <th>Error Message & Code Context</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="diagnosticsTableBody">
+                                        <tr>
+                                            <td colspan="6" class="text-center text-success py-4">
+                                                <i class="ri-check-line fs-5 me-1"></i>No compiler or syntax errors detected in the generated test class.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Tab 5: Live Test Runner -->
+                        <div class="tab-pane fade p-3" id="pane-runner" role="tabpanel">
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-3">
+                                    <div class="card bg-success bg-opacity-10 border-0 rounded-3 p-3 text-center">
+                                        <div class="text-success fs-3 fw-bold" id="statTestsPassed">0</div>
+                                        <div class="text-muted small fw-semibold">Tests Passed</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-danger bg-opacity-10 border-0 rounded-3 p-3 text-center">
+                                        <div class="text-danger fs-3 fw-bold" id="statTestsFailed">0</div>
+                                        <div class="text-muted small fw-semibold">Tests Failed</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-primary bg-opacity-10 border-0 rounded-3 p-3 text-center">
+                                        <div class="text-primary fs-3 fw-bold" id="statLineCoverage">0%</div>
+                                        <div class="text-muted small fw-semibold">Line Coverage</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card bg-info bg-opacity-10 border-0 rounded-3 p-3 text-center">
+                                        <div class="text-info fs-3 fw-bold" id="statBranchCoverage">0%</div>
+                                        <div class="text-muted small fw-semibold">Branch Coverage</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-secondary small">Target Test Project Path (.csproj or directory)</label>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control" id="runnerProjectPathInput" value="" placeholder="Enter target test project (.csproj) or test directory..." />
+                                    <button class="btn btn-warning fw-semibold px-4" type="button" id="btnExecuteDotnetTest">
+                                        <i class="ri-play-fill me-1"></i>Execute dotnet test
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="runner-console bg-dark text-white p-3 rounded-3 font-monospace small overflow-auto" style="height: 300px;" id="runnerConsoleOutput">
+                                <span class="text-muted">// Ready to run tests. Click 'Execute dotnet test' to build and run the test suite.</span>
+                            </div>
+                        </div>
+
+                        <!-- Tab 6: Traceability Matrix -->
+                        <div class="tab-pane fade p-3" id="pane-traceability" role="tabpanel">
+                            <div class="alert alert-light border py-2 px-3 small mb-3">
+                                <span class="fw-bold text-dark">BRD Requirement to Test Case Mapping</span>
+                                <span class="text-muted d-block small">Links business specification clauses directly to automated assertions.</span>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered align-middle small" id="tblTraceability">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 120px;">Rule ID</th>
+                                            <th>Business Requirement</th>
+                                            <th>Target Method</th>
+                                            <th>Generated Test Case</th>
+                                            <th style="width: 110px;">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="traceabilityTableBody">
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted py-4">No BRD document uploaded. Upload a document in Step 2 to map requirements.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Custom Test Case Modal (Step 6), AI Settings & Folder Browser Modals -->
+@await Html.PartialAsync("_CustomTestCaseModal")
+@await Html.PartialAsync("_AiConfigurationModal", Model)
+@await Html.PartialAsync("_FolderBrowserModal", Model)
